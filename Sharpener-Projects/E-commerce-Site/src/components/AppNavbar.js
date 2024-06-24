@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Navbar, Nav, Button } from "react-bootstrap";
+import CartContext from "../context/CartContext";
 import Cart from "./Cart";
 
 const AppNavbar = () => {
+  const { cart } = useContext(CartContext);
   const [showCart, setShowCart] = useState(false);
 
   const handleCartClick = () => {
     setShowCart(!showCart);
   };
+
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <>
@@ -20,7 +24,7 @@ const AppNavbar = () => {
             <Nav.Link href="#about">ABOUT</Nav.Link>
           </Nav>
           <Button variant="outline-info" onClick={handleCartClick}>
-            Cart (0)
+            Cart ({totalItems})
           </Button>
         </Container>
       </Navbar>

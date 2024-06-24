@@ -1,45 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Container, Table, Button } from "react-bootstrap";
+import CartContext from "../context/CartContext";
 import CartItem from "./CartItem";
 import "./Cart.css";
 
-const cartElements = [
-  {
-    title: "Colors",
-    price: 100,
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
-    quantity: 2,
-  },
-  {
-    title: "Black and white Colors",
-    price: 50,
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
-    quantity: 3,
-  },
-  {
-    title: "Yellow and Black Colors",
-    price: 70,
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%203.png",
-    quantity: 1,
-  },
-];
-
 const Cart = ({ handleClose }) => {
-  const [cartItems, setCartItems] = useState(cartElements);
+  const { cart, removeItemFromCart, updateItemQuantity } =
+    useContext(CartContext);
 
-  const handleRemove = (index) => {
-    const newCartItems = [...cartItems];
-    newCartItems.splice(index, 1);
-    setCartItems(newCartItems);
-  };
-
-  const handleQuantityChange = (index, quantity) => {
-    const newCartItems = [...cartItems];
-    newCartItems[index].quantity = quantity;
-    setCartItems(newCartItems);
-  };
-
-  const totalAmount = cartItems.reduce(
+  const totalAmount = cart.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
@@ -63,13 +32,13 @@ const Cart = ({ handleClose }) => {
             </tr>
           </thead>
           <tbody>
-            {cartItems.map((item, index) => (
+            {cart.map((item, index) => (
               <CartItem
                 key={index}
                 item={item}
-                onRemove={() => handleRemove(index)}
+                onRemove={() => removeItemFromCart(item.title)}
                 onQuantityChange={(quantity) =>
-                  handleQuantityChange(index, quantity)
+                  updateItemQuantity(item.title, quantity)
                 }
               />
             ))}

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Container, Navbar, Nav, Button } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 import CartContext from "../context/CartContext";
 import Cart from "./Cart";
 
@@ -17,11 +18,19 @@ const AppNavbar = () => {
     <>
       <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
         <Container>
-          <Navbar.Brand href="#home">The Generics</Navbar.Brand>
+          <Navbar.Brand as={NavLink} to="/">
+            The Generics
+          </Navbar.Brand>
           <Nav className="me-auto ms-3">
-            <Nav.Link href="#home">HOME</Nav.Link>
-            <Nav.Link href="#store">STORE</Nav.Link>
-            <Nav.Link href="#about">ABOUT</Nav.Link>
+            <Nav.Link as={NavLink} exact to="/">
+              HOME
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="#store">
+              STORE
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/about">
+              ABOUT
+            </Nav.Link>
           </Nav>
           <Button variant="outline-info" onClick={handleCartClick}>
             Cart ({totalItems})

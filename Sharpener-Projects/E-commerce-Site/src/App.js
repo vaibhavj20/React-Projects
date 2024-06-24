@@ -1,21 +1,17 @@
 import React from "react";
-import { Container } from "react-bootstrap";
-import "./App.css";
-import AppNavbar from "./components/Navbar";
-import Header from "./components/Header";
+import AppNavbar from "./components/AppNavbar";
 import ProductList from "./components/ProductList";
 import productsArr from "./components/Products";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <AppNavbar />
-      <Header />
-      <Container className="music-section py-5">
-        <h2 className="text-center mb-4">MUSIC</h2>
+      <div className="container mt-4">
+        <h1 className="text-center mb-4">The Generics</h1>
         <ProductList products={productsArr} />
-      </Container>
+      </div>
     </div>
   );
 }

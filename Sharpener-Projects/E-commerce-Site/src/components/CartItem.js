@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, FormControl } from "react-bootstrap";
+import "./CartItem.css";
 
 const CartItem = ({ item, onRemove, onQuantityChange }) => {
   const handleQuantityChange = (event) => {

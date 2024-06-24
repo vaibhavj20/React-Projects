@@ -1,0 +1,8 @@
+.about-container {
+  min-height: 80vh; /* Adjust as needed for vertical centering */
+}
+
+.about-image {
+  max-width: 400px;
+  height: 400px;
+}

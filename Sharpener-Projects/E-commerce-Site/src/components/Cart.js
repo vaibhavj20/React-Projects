@@ -17,7 +17,7 @@ const Cart = ({ handleClose }) => {
     <div className="cart-container">
       <Container className="p-3">
         <div className="d-flex justify-content-between align-items-center mb-3">
-          <h2 className="text-center">CART</h2>
+          <h2 className="text-center">Cart</h2>
           <Button variant="outline-secondary" onClick={handleClose}>
             X
           </Button>
@@ -25,10 +25,10 @@ const Cart = ({ handleClose }) => {
         <Table bordered>
           <thead>
             <tr>
-              <th>ITEM</th>
-              <th>PRICE</th>
-              <th>QUANTITY</th>
-              <th>ACTION</th>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>

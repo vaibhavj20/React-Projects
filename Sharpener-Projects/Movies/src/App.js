@@ -54,11 +54,11 @@
 
 // export default App;
 
-import React, { useState, useEffect, useCallback } from "react";
-
+import React, { useState, useEffect } from "react";
 import MoviesList from "./components/MoviesList";
-import "./App.css";
 import Loader from "./components/Loader";
+import AddMovie from "./components/AddMovie";
+import "./App.css";
 
 function App() {
   const [movies, setMovies] = useState([]);
@@ -74,34 +74,30 @@ function App() {
     };
   }, [retryInterval]);
 
-  const fetchMovieHandler = useCallback(async () => {
+  async function fetchMovieHandler() {
     setIsLoading(true);
     setError(null);
 
     try {
       const response = await fetch("https://swapi.dev/api/films/");
-
       if (!response.ok) {
         throw new Error("Something went wrong....Retrying");
       }
 
       const data = await response.json();
-
-      const transformedMovies = data.results.map((movieData) => {
-        return {
-          id: movieData.episode_id,
-          title: movieData.title,
-          openingText: movieData.opening_crawl,
-          releaseDate: movieData.release_date,
-        };
-      });
+      const transformedMovies = data.results.map((movieData) => ({
+        id: movieData.episode_id,
+        title: movieData.title,
+        openingText: movieData.opening_crawl,
+        releaseDate: movieData.release_date,
+      }));
 
       setMovies(transformedMovies);
-      setError(null); // Clear any previous error messages
-      clearInterval(retryInterval); // Clear the retry interval on success
+      setError(null);
+      clearInterval(retryInterval);
+      setRetryInterval(null);
     } catch (error) {
       setError(error.message);
-
       if (!retryInterval) {
         const intervalId = setInterval(fetchMovieHandler, 5000);
         setRetryInterval(intervalId);
@@ -109,10 +105,7 @@ function App() {
     }
 
     setIsLoading(false);
-  }, []);
-  useEffect(() => {
-    fetchMovieHandler();
-  }, [fetchMovieHandler]);
+  }
 
   function cancelRetryHandler() {
     if (retryInterval) {
@@ -123,8 +116,15 @@ function App() {
     }
   }
 
+  function addMovieHandler(movie) {
+    console.log(movie);
+  }
+
   return (
     <React.Fragment>
+      <section>
+        <AddMovie onAddMovie={addMovieHandler} />
+      </section>
       <section>
         <button onClick={fetchMovieHandler}>Fetch Movies</button>
         {retryInterval && (

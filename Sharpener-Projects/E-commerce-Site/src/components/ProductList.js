@@ -18,8 +18,11 @@ const ProductList = ({ products }) => {
             />
             <Card.Body>
               <Card.Title>{product.title}</Card.Title>
-              <Card.Text>₹{product.price.toFixed(2)}</Card.Text>
-              <Button variant="primary" onClick={() => addItemToCart(product)}>
+              <Card.Text>${product.price.toFixed(2)}</Card.Text>
+              <Button
+                className="add-to-cart-button"
+                onClick={() => addItemToCart(product)}
+              >
                 Add to Cart
               </Button>
             </Card.Body>

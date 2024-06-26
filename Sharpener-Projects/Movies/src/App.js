@@ -7,6 +7,7 @@ function App() {
   const [movies, setMovies] = useState([]);
 
   async function fetchMovieHandler() {
+    //fetched api
     const response = await fetch("https://swapi.dev/api/films");
     const data = await response.json();
 

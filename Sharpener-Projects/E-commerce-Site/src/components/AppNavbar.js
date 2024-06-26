@@ -1,12 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Container, Navbar, Nav, Button } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import CartContext from "../context/CartContext";
 import Cart from "./Cart";
 
 const AppNavbar = () => {
   const { cart } = useContext(CartContext);
   const [showCart, setShowCart] = useState(false);
+  const location = useLocation();
 
   const handleCartClick = () => {
     setShowCart(!showCart);
@@ -22,19 +23,21 @@ const AppNavbar = () => {
             The Generics
           </Navbar.Brand>
           <Nav className="me-auto ms-3">
-            <Nav.Link as={NavLink} exact to="/">
-              HOME
+            <Nav.Link as={NavLink} to="/">
+              Home
             </Nav.Link>
-            <Nav.Link as={NavLink} to="#store">
-              STORE
+            <Nav.Link as={NavLink} to="/store">
+              Store
             </Nav.Link>
             <Nav.Link as={NavLink} to="/about">
-              ABOUT
+              About
             </Nav.Link>
           </Nav>
-          <Button variant="outline-info" onClick={handleCartClick}>
-            Cart ({totalItems})
-          </Button>
+          {location.pathname === "/store" && (
+            <Button variant="outline-info" onClick={handleCartClick}>
+              Cart ({totalItems})
+            </Button>
+          )}
         </Container>
       </Navbar>
       {showCart && <Cart handleClose={handleCartClick} />}

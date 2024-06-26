@@ -54,7 +54,7 @@
 
 // export default App;
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import MoviesList from "./components/MoviesList";
 import "./App.css";
@@ -74,12 +74,12 @@ function App() {
     };
   }, [retryInterval]);
 
-  async function fetchMovieHandler() {
+  const fetchMovieHandler = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await fetch("https://swapi.dev/api/film/");
+      const response = await fetch("https://swapi.dev/api/films/");
 
       if (!response.ok) {
         throw new Error("Something went wrong....Retrying");
@@ -109,7 +109,10 @@ function App() {
     }
 
     setIsLoading(false);
-  }
+  }, []);
+  useEffect(() => {
+    fetchMovieHandler();
+  }, [fetchMovieHandler]);
 
   function cancelRetryHandler() {
     if (retryInterval) {

@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import AppNavbar from "./components/AppNavbar";
+import Home from "./components/Home";
 import ProductList from "./components/ProductList";
 import productsArr from "./components/Products";
 import About from "./components/About";
@@ -12,8 +13,9 @@ function App() {
       <AppNavbar />
       <div className="container mt-4">
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route
-            path="/"
+            path="/store"
             element={
               <>
                 <h1 className="text-center mb-4">The Generics</h1>

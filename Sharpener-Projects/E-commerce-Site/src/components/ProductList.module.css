@@ -1,0 +1,30 @@
+/* ProductList.css */
+.productCard {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.productCard:hover {
+  transform: scale(1.02);
+}
+
+.addToCartButton {
+  background-color: #ff6f61;
+  border: none;
+  padding: 9px 12px;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.addToCartButton:hover {
+  background-color: #e55750;
+}
+
+.productImage {
+  height: 200px;
+  object-fit: cover;
+}

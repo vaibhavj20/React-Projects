@@ -1,10 +1,10 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AppNavbar from "./components/AppNavbar";
-import Home from "./components/Home";
 import ProductList from "./components/ProductList";
-import productsArr from "./components/Products";
+import ContactUs from "./components/ContactUs";
 import About from "./components/About";
+import productsArr from "./components/Products";
 import "./App.css";
 
 function App() {
@@ -13,9 +13,8 @@ function App() {
       <AppNavbar />
       <div className="container mt-4">
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route
-            path="/store"
+            path="/"
             element={
               <>
                 <h1 className="text-center mb-4">The Generics</h1>
@@ -23,7 +22,12 @@ function App() {
               </>
             }
           />
+          <Route
+            path="/store"
+            element={<ProductList products={productsArr} />}
+          />
           <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<ContactUs />} />
         </Routes>
       </div>
     </div>

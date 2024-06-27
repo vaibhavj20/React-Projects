@@ -1,0 +1,11 @@
+/* ProductDetails.module.css */
+
+.productDetails {
+  margin-top: 50px;
+}
+
+.productImage {
+  max-width: 90%;
+  height: 30px;
+  margin-top: 70px;
+}

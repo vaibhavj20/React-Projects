@@ -1,15 +1,28 @@
+
+
 import React, { useContext, useState } from "react";
 import { Container, Navbar, Nav, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CartContext from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import Cart from "./Cart";
 
 const AppNavbar = () => {
   const { cart } = useContext(CartContext);
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
   const [showCart, setShowCart] = useState(false);
 
   const handleCartClick = () => {
     setShowCart(!showCart);
+  };
+
+  const handleStoreClick = () => {
+    if (!isLoggedIn) {
+      navigate("/login", { state: { from: "/store" } });
+    } else {
+      navigate("/store");
+    }
   };
 
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
@@ -25,15 +38,17 @@ const AppNavbar = () => {
             <Nav.Link as={Link} to="/">
               HOME
             </Nav.Link>
-            <Nav.Link as={Link} to="/store">
+            <Nav.Link as="span" onClick={handleStoreClick}>
               STORE
             </Nav.Link>
             <Nav.Link as={Link} to="/about">
               ABOUT
             </Nav.Link>
-            <Nav.Link as={Link} to="/login">
-              LOGIN
-            </Nav.Link>
+            {!isLoggedIn && (
+              <Nav.Link as={Link} to="/login">
+                LOGIN
+              </Nav.Link>
+            )}
             <Nav.Link as={Link} to="/contact">
               CONTACT US
             </Nav.Link>

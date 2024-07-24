@@ -1,49 +1,54 @@
-/* src/components/AuthForm.module.css */
-.auth {
-  max-width: 25rem;
-  margin: 2rem auto;
-  padding: 1rem;
-  border-radius: 6px;
-  background-color: #f4f0fa;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-}
-
-.control {
-  margin-bottom: 0.5rem;
-}
-
-.control label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.control input {
-  display: block;
+.authForm {
   width: 100%;
-  border: 1px solid #ccc;
-  font: inherit;
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  background-color: #333;
+  border-radius: 8px;
+}
+
+.authForm h2 {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  display: block;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 10px;
   border-radius: 4px;
-  background-color: #f4f0fa;
-  padding: 0.25rem;
+  border: none;
 }
 
-.actions {
-  margin-top: 1rem;
+.error {
+  color: #e74c3c;
+  text-align: center;
+  margin-top: 10px;
 }
 
-.actions button {
-  cursor: pointer;
-  font: inherit;
+.buttonGroup {
+  text-align: center;
+}
+
+.buttonGroup button {
+  background-color: #4caf50;
   color: white;
-  background-color: #ff0055;
-  border: 1px solid #ff0055;
+  border: none;
+  padding: 10px 20px;
   border-radius: 4px;
-  padding: 0.5rem 2rem;
+  cursor: pointer;
 }
 
-.actions button:hover,
-.actions button:active {
-  background-color: #ff4382;
-  border-color: #ff4382;
+.buttonGroup button:hover {
+  background-color: #45a049;
 }

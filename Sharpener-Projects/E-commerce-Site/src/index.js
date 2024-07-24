@@ -7,9 +7,7 @@ import { CartProvider } from "./context/CartContext";
 
 ReactDOM.render(
   <CartProvider>
-    <Router>
-      <App />
-    </Router>
+    <App />
   </CartProvider>,
   document.getElementById("root")
 );

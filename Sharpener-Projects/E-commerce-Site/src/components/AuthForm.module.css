@@ -1,0 +1,49 @@
+/* src/components/AuthForm.module.css */
+.auth {
+  max-width: 25rem;
+  margin: 2rem auto;
+  padding: 1rem;
+  border-radius: 6px;
+  background-color: #f4f0fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.control {
+  margin-bottom: 0.5rem;
+}
+
+.control label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.control input {
+  display: block;
+  width: 100%;
+  border: 1px solid #ccc;
+  font: inherit;
+  border-radius: 4px;
+  background-color: #f4f0fa;
+  padding: 0.25rem;
+}
+
+.actions {
+  margin-top: 1rem;
+}
+
+.actions button {
+  cursor: pointer;
+  font: inherit;
+  color: white;
+  background-color: #ff0055;
+  border: 1px solid #ff0055;
+  border-radius: 4px;
+  padding: 0.5rem 2rem;
+}
+
+.actions button:hover,
+.actions button:active {
+  background-color: #ff4382;
+  border-color: #ff4382;
+}

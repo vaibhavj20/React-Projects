@@ -40,6 +40,7 @@ import ProductDetails from "./components/ProductDetails"; // New component
 import { CartProvider } from "./context/CartContext";
 import productsArr from "./components/Products"; // Your products array
 import "./App.css";
+import AuthForm from "./components/AuthForm";
 
 function App() {
   return (
@@ -53,12 +54,12 @@ function App() {
             element={<ProductList products={productsArr} />}
           />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<AuthForm />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route
             path="/product/:id"
             element={<ProductDetails products={productsArr} />}
-          />{" "}
-          {/* New route */}
+          />
         </Routes>
       </div>
     </CartProvider>

@@ -31,6 +31,9 @@ const AppNavbar = () => {
             <Nav.Link as={Link} to="/about">
               ABOUT
             </Nav.Link>
+            <Nav.Link as={Link} to="/login">
+              LOGIN
+            </Nav.Link>
             <Nav.Link as={Link} to="/contact">
               CONTACT US
             </Nav.Link>

@@ -32,13 +32,13 @@ const Cart = ({ handleClose }) => {
             </tr>
           </thead>
           <tbody>
-            {cart.map((item, index) => (
+            {cart.map((item) => (
               <CartItem
-                key={index}
+                key={item._id}
                 item={item}
-                onRemove={() => removeItemFromCart(item.title)}
+                onRemove={() => removeItemFromCart(item._id)}
                 onQuantityChange={(quantity) =>
-                  updateItemQuantity(item.title, quantity)
+                  updateItemQuantity(item._id, quantity)
                 }
               />
             ))}

@@ -5,7 +5,6 @@ const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Example function to handle login
   const login = () => setIsLoggedIn(true);
   const logout = () => setIsLoggedIn(false);
 

@@ -1,5 +1,3 @@
-
-
 import React, { useContext, useState } from "react";
 import { Container, Navbar, Nav, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +7,7 @@ import Cart from "./Cart";
 
 const AppNavbar = () => {
   const { cart } = useContext(CartContext);
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
   const [showCart, setShowCart] = useState(false);
 
@@ -44,14 +42,19 @@ const AppNavbar = () => {
             <Nav.Link as={Link} to="/about">
               ABOUT
             </Nav.Link>
+            <Nav.Link as={Link} to="/contact">
+              CONTACT US
+            </Nav.Link>
             {!isLoggedIn && (
               <Nav.Link as={Link} to="/login">
                 LOGIN
               </Nav.Link>
             )}
-            <Nav.Link as={Link} to="/contact">
-              CONTACT US
-            </Nav.Link>
+            {isLoggedIn && (
+              <Button variant="outline-light" onClick={logout}>
+                LOGOUT
+              </Button>
+            )}
           </Nav>
           <Button variant="outline-info" onClick={handleCartClick}>
             Cart ({totalItems})

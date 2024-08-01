@@ -1,21 +1,30 @@
 import React, { useState } from "react";
 import "../style.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../auth/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log("Acoount Created");
+      navigate("/login");
+      toast.success("Account Created Successfully");
     } catch (error) {
       console.log(error);
+      toast.error(error.message);
     }
   };
   return (

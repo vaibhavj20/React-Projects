@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import "../style.css";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../auth/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
+import "../styles/Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -42,9 +43,10 @@ const Login = () => {
       }
     }
   };
+
   return (
-    <div className="container">
-      <div className="card">
+    <div className="login-container">
+      <div className="login-card">
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -68,9 +70,7 @@ const Login = () => {
           <button type="submit">Login</button>
         </form>
         <p>
-          <span style={{ color: "blue", cursor: "pointer" }}>
-            Forgot password?
-          </span>
+          <span>Forgot password?</span>
         </p>
         <p>
           Don't have an account? <Link to="/signup">Sign Up</Link>

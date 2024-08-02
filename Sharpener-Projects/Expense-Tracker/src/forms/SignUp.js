@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "../style.css";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../auth/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
+import "../styles/Signup.css";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ const Signup = () => {
     }
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      console.log("Acoount Created");
+      console.log("Account Created");
       navigate("/login");
       toast.success("Account Created Successfully");
     } catch (error) {
@@ -27,9 +27,10 @@ const Signup = () => {
       toast.error(error.message);
     }
   };
+
   return (
-    <div className="container">
-      <div className="card">
+    <div className="signup-container">
+      <div className="signup-card">
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">

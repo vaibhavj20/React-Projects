@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faImage } from "@fortawesome/free-solid-svg-icons";
 import { auth, database } from "../auth/firebase";
-import { updateProfile } from "firebase/auth";
-import { ref, set } from "firebase/database";
+import { updateProfile, onAuthStateChanged } from "firebase/auth";
+import { ref, set, get } from "firebase/database";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/Home.css";
@@ -12,9 +12,48 @@ const Home = () => {
   const [showForm, setShowForm] = useState(false);
   const [fullName, setFullName] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
+  const [profileUpdated, setProfileUpdated] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Listen for authentication state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserId(user.uid);
+        fetchProfileData(user.uid);
+      } else {
+        setUserId(null);
+        setFullName("");
+        setPhotoUrl("");
+        setProfileUpdated(false);
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Fetch profile data from Firebase
+  const fetchProfileData = async (uid) => {
+    try {
+      const userRef = ref(database, `users/${uid}`);
+      const snapshot = await get(userRef);
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        setFullName(userData.fullName);
+        setPhotoUrl(userData.photoURL);
+        setProfileUpdated(true);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleCompleteClick = () => {
-    setShowForm(true);
+    setShowForm(!showForm);
   };
 
   const handleFormSubmit = async (e) => {
@@ -36,6 +75,7 @@ const Home = () => {
 
       toast.success("Profile updated successfully!");
       setShowForm(false);
+      setProfileUpdated(true);
     } catch (error) {
       toast.error("Error updating profile. Please try again.");
     }
@@ -46,17 +86,42 @@ const Home = () => {
   };
 
   return (
-    <div className="home-container-new">
-      <div className="navbar-new">
-        <h2>Welcome to Expense Tracker</h2>
-        <div className="profile-section-new">
-          <p className="profile-incomplete-new">Your profile is incomplete</p>
-          <button className="complete-btn-new" onClick={handleCompleteClick}>
-            Complete now
-          </button>
+    <div>
+      <div className="home-container-new">
+        <div className="navbar-new">
+          <h2>Welcome to Expense Tracker</h2>
+          <div className="profile-section-new">
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                {!profileUpdated && (
+                  <>
+                    <p className="profile-incomplete-new">
+                      Your profile is incomplete
+                    </p>
+                    <button
+                      className="complete-btn-new"
+                      onClick={handleCompleteClick}
+                    >
+                      Complete now
+                    </button>
+                  </>
+                )}
+                {profileUpdated && (
+                  <button
+                    className="profile-btn-new"
+                    onClick={handleCompleteClick}
+                  >
+                    PROFILE
+                  </button>
+                )}
+              </>
+            )}
+          </div>
         </div>
+        <hr className="divider-new" />
       </div>
-      <hr className="divider-new" />
 
       {showForm && (
         <div className="profile-form-container-new">

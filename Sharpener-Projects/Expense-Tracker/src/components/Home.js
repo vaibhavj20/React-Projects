@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faImage } from "@fortawesome/free-solid-svg-icons";
 import { auth, database } from "../auth/firebase";
-import { updateProfile, onAuthStateChanged } from "firebase/auth";
+import {
+  updateProfile,
+  onAuthStateChanged,
+  sendEmailVerification,
+} from "firebase/auth";
 import { ref, set, get } from "firebase/database";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,12 +19,15 @@ const Home = () => {
   const [profileUpdated, setProfileUpdated] = useState(false);
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [showVerifyButton, setShowVerifyButton] = useState(false);
 
-  // Listen for authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserId(user.uid);
+        setEmailVerified(user.emailVerified);
+        setShowVerifyButton(!user.emailVerified);
         fetchProfileData(user.uid);
       } else {
         setUserId(null);
@@ -34,7 +41,6 @@ const Home = () => {
     return () => unsubscribe();
   }, []);
 
-  // Fetch profile data from Firebase
   const fetchProfileData = async (uid) => {
     try {
       const userRef = ref(database, `users/${uid}`);
@@ -85,6 +91,20 @@ const Home = () => {
     setShowForm(false);
   };
 
+  const handleVerifyEmail = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        await sendEmailVerification(user);
+        toast.success("Verification email sent!");
+        setShowVerifyButton(false); // Hide the verify button after it's clicked
+      } catch (error) {
+        console.error("Error sending verification email:", error);
+        toast.error("Error sending verification email. Please try again.");
+      }
+    }
+  };
+
   return (
     <div>
       <div className="home-container-new">
@@ -109,12 +129,22 @@ const Home = () => {
                   </>
                 )}
                 {profileUpdated && (
-                  <button
-                    className="profile-btn-new"
-                    onClick={handleCompleteClick}
-                  >
-                    PROFILE
-                  </button>
+                  <>
+                    <button
+                      className="profile-btn-new"
+                      onClick={handleCompleteClick}
+                    >
+                      PROFILE
+                    </button>
+                    {!emailVerified && showVerifyButton && (
+                      <button
+                        className="verify-email-btn"
+                        onClick={handleVerifyEmail}
+                      >
+                        Verify Email
+                      </button>
+                    )}
+                  </>
                 )}
               </>
             )}

@@ -1,0 +1,77 @@
+.profile-form-container-new {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-header-new {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-form-new {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group-new {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.form-icon-new {
+  margin-right: 10px;
+}
+
+.profile-form-new input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-buttons-new {
+  display: flex;
+  justify-content: space-between;
+}
+
+.update-btn-new {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.update-btn-new:hover {
+  background-color: #218838;
+}
+
+.update-btn-new:focus {
+  outline: none;
+}
+
+.cancel-btn-new {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-btn-new:hover {
+  background-color: #c9302c;
+}
+
+.cancel-btn-new:focus {
+  outline: none;
+}

@@ -1,0 +1,73 @@
+.profile-section-new {
+  display: flex;
+  align-items: center;
+}
+
+.profile-incomplete-new {
+  color: #d9534f;
+  margin-right: 10px;
+}
+
+.complete-btn-new {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+
+.complete-btn-new:hover {
+  background-color: #0056b3;
+}
+
+.complete-btn-new:focus {
+  outline: none;
+}
+
+.profile-btn-new {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+
+.profile-btn-new:hover {
+  background-color: #218838;
+}
+
+.profile-btn-new:focus {
+  outline: none;
+}
+
+.verify-email-btn {
+  background-color: #ffc107;
+  color: black;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.verify-email-btn:hover {
+  background-color: #e0a800;
+}
+
+.verify-email-btn:focus {
+  outline: none;
+}
+
+.profile-buttons-container {
+  display: flex;
+  align-items: center;
+}

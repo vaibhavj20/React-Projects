@@ -70,7 +70,9 @@ const Login = () => {
           <button type="submit">Login</button>
         </form>
         <p>
-          <span>Forgot password?</span>
+          <span onClick={() => navigate("/forgot-password")}>
+            Forgot password?
+          </span>
         </p>
         <p>
           Don't have an account? <Link to="/signup">Sign Up</Link>

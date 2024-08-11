@@ -5,6 +5,8 @@ import { auth, database } from "../auth/firebase";
 import ProfileSection from "./ProfileSection";
 import ProfileForm from "./ProfileForm";
 import "../styles/Home.css";
+import ExpenseForm from "../components/Expenses/ExpenseForm";
+import ExpenseList from "../components/Expenses/ExpenseList";
 
 const Home = () => {
   const [showForm, setShowForm] = useState(false);
@@ -16,6 +18,7 @@ const Home = () => {
   const [emailVerified, setEmailVerified] = useState(false);
   const [showVerifyButton, setShowVerifyButton] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -66,6 +69,9 @@ const Home = () => {
       setLoggingOut(false); // Stop loading if error occurs
     }
   };
+  const handleAddExpense = (newExpense) => {
+    setExpenses([...expenses, newExpense]);
+  };
 
   return (
     <div className="home-container-new">
@@ -98,6 +104,8 @@ const Home = () => {
           setShowForm={setShowForm}
         />
       )}
+      <ExpenseForm onAddExpense={handleAddExpense} />
+      <ExpenseList expenses={expenses} />
       {loggingOut && (
         <div className="overlay">
           <div className="spinner"></div>

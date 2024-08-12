@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { ref, get } from "firebase/database";
+import { ref, onValue, get } from "firebase/database";
 import { auth, database } from "../auth/firebase";
 import ProfileSection from "./ProfileSection";
 import ProfileForm from "./ProfileForm";
@@ -27,6 +27,7 @@ const Home = () => {
         setEmailVerified(user.emailVerified);
         setShowVerifyButton(!user.emailVerified);
         fetchProfileData(user.uid);
+        fetchExpenses(); // Fetch expenses when the user is authenticated
       } else {
         setUserId(null);
         setFullName("");
@@ -54,6 +55,20 @@ const Home = () => {
     setLoading(false);
   };
 
+  const fetchExpenses = () => {
+    const expensesRef = ref(database, "expenses");
+    onValue(expensesRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const loadedExpenses = Object.keys(data).map((key) => ({
+          id: key,
+          ...data[key],
+        }));
+        setExpenses(loadedExpenses);
+      }
+    });
+  };
+
   const handleCompleteClick = () => {
     setShowForm(true);
   };
@@ -69,8 +84,18 @@ const Home = () => {
       setLoggingOut(false); // Stop loading if error occurs
     }
   };
+
   const handleAddExpense = (newExpense) => {
-    setExpenses([...expenses, newExpense]);
+    setExpenses((prevExpenses) => {
+      // Check if the expense already exists
+      const expenseExists = prevExpenses.some(
+        (exp) => exp.id === newExpense.id
+      );
+      if (expenseExists) {
+        return prevExpenses;
+      }
+      return [...prevExpenses, newExpense];
+    });
   };
 
   return (

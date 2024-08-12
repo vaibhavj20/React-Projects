@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { ref, push } from "firebase/database";
+import { database } from "../../auth/firebase";
 import "../../styles/Expense.css";
 
 const ExpenseForm = ({ onAddExpense }) => {
@@ -6,18 +8,34 @@ const ExpenseForm = ({ onAddExpense }) => {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Food");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newExpense = {
-      id: Date.now(),
+
+    const expenseData = {
       amount,
       description,
       category,
+      date: new Date().toLocaleString(),
     };
-    onAddExpense(newExpense);
-    setAmount("");
-    setDescription("");
-    setCategory("Food");
+
+    try {
+      // Push the new expense to Firebase Realtime Database
+      const expenseRef = await push(ref(database, "expenses"), expenseData);
+      console.log("Expense saved successfully");
+
+      // Optionally clear the form after submission
+      setAmount("");
+      setDescription("");
+      setCategory("Food");
+
+      // Call the parent component's function to add the expense
+      onAddExpense({
+        id: expenseRef.key, // Use the key of the new expense
+        ...expenseData,
+      });
+    } catch (error) {
+      console.error("Error saving expense:", error);
+    }
   };
 
   return (

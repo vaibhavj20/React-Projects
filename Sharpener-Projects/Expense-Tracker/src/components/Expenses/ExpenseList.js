@@ -6,8 +6,8 @@ const ExpenseList = ({ expenses }) => {
     <div className="expense-list-container">
       <h2>Expense List</h2>
       <ul className="expense-list">
-        {expenses.map((expense, index) => (
-          <li key={index} className="expense-item">
+        {expenses.map((expense) => (
+          <li key={expense.id} className="expense-item">
             <span>
               {expense.description} - {expense.amount} ({expense.category})
             </span>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { ref, onValue, get } from "firebase/database";
+import { ref, get, remove, set } from "firebase/database";
 import { auth, database } from "../auth/firebase";
 import ProfileSection from "./ProfileSection";
 import ProfileForm from "./ProfileForm";
@@ -19,6 +19,7 @@ const Home = () => {
   const [showVerifyButton, setShowVerifyButton] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const [expenses, setExpenses] = useState([]);
+  const [expenseToEdit, setExpenseToEdit] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -27,7 +28,7 @@ const Home = () => {
         setEmailVerified(user.emailVerified);
         setShowVerifyButton(!user.emailVerified);
         fetchProfileData(user.uid);
-        fetchExpenses(); // Fetch expenses when the user is authenticated
+        fetchExpenses();
       } else {
         setUserId(null);
         setFullName("");
@@ -55,22 +56,59 @@ const Home = () => {
     setLoading(false);
   };
 
-  const fetchExpenses = () => {
-    const expensesRef = ref(database, "expenses");
-    onValue(expensesRef, (snapshot) => {
+  const fetchExpenses = async () => {
+    try {
+      const snapshot = await get(ref(database, "expenses"));
       if (snapshot.exists()) {
-        const data = snapshot.val();
-        const loadedExpenses = Object.keys(data).map((key) => ({
+        const expensesData = snapshot.val();
+        const expensesList = Object.keys(expensesData).map((key) => ({
           id: key,
-          ...data[key],
+          ...expensesData[key],
         }));
-        setExpenses(loadedExpenses);
+        setExpenses(expensesList);
       }
-    });
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+    }
   };
 
-  const handleCompleteClick = () => {
-    setShowForm(true);
+  const handleAddExpense = async (newExpense) => {
+    try {
+      const newExpenseRef = ref(database, `expenses/${newExpense.id}`);
+      await set(newExpenseRef, newExpense);
+      setExpenses([...expenses, newExpense]);
+    } catch (error) {
+      console.error("Error adding expense:", error);
+    }
+  };
+
+  const handleUpdateExpense = async (updatedExpense) => {
+    try {
+      await set(ref(database, `expenses/${updatedExpense.id}`), updatedExpense);
+      console.log("Expense successfully updated");
+      setExpenses((prevExpenses) =>
+        prevExpenses.map((expense) =>
+          expense.id === updatedExpense.id ? updatedExpense : expense
+        )
+      );
+      setExpenseToEdit(null); // Clear the edit state after update
+    } catch (error) {
+      console.error("Error updating expense:", error);
+    }
+  };
+
+  const handleEditExpense = (expense) => {
+    setExpenseToEdit(expense);
+  };
+
+  const handleDeleteExpense = async (id) => {
+    try {
+      await remove(ref(database, `expenses/${id}`));
+      console.log("Expense successfully deleted");
+      setExpenses(expenses.filter((expense) => expense.id !== id));
+    } catch (error) {
+      console.error("Error deleting expense:", error);
+    }
   };
 
   const handleLogout = async () => {
@@ -85,17 +123,8 @@ const Home = () => {
     }
   };
 
-  const handleAddExpense = (newExpense) => {
-    setExpenses((prevExpenses) => {
-      // Check if the expense already exists
-      const expenseExists = prevExpenses.some(
-        (exp) => exp.id === newExpense.id
-      );
-      if (expenseExists) {
-        return prevExpenses;
-      }
-      return [...prevExpenses, newExpense];
-    });
+  const handleCompleteClick = () => {
+    setShowForm(true);
   };
 
   return (
@@ -129,8 +158,16 @@ const Home = () => {
           setShowForm={setShowForm}
         />
       )}
-      <ExpenseForm onAddExpense={handleAddExpense} />
-      <ExpenseList expenses={expenses} />
+      <ExpenseForm
+        onAddExpense={handleAddExpense}
+        expenseToEdit={expenseToEdit}
+        onUpdateExpense={handleUpdateExpense}
+      />
+      <ExpenseList
+        expenses={expenses}
+        onEditExpense={handleEditExpense}
+        onDeleteExpense={handleDeleteExpense}
+      />
       {loggingOut && (
         <div className="overlay">
           <div className="spinner"></div>

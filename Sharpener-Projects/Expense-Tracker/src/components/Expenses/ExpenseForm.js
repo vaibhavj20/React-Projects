@@ -1,50 +1,47 @@
-import React, { useState } from "react";
-import { ref, push } from "firebase/database";
-import { database } from "../../auth/firebase";
+import React, { useState, useEffect } from "react";
 import "../../styles/Expense.css";
 
-const ExpenseForm = ({ onAddExpense }) => {
+const ExpenseForm = ({ onAddExpense, expenseToEdit, onUpdateExpense }) => {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("Food");
+  const [category, setCategory] = useState("");
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    if (expenseToEdit) {
+      setAmount(expenseToEdit.amount);
+      setDescription(expenseToEdit.description);
+      setCategory(expenseToEdit.category);
+    }
+  }, [expenseToEdit]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    const expenseData = {
+    const expense = {
+      id: expenseToEdit ? expenseToEdit.id : Date.now().toString(),
       amount,
       description,
       category,
-      date: new Date().toLocaleString(),
     };
-
-    try {
-      // Push the new expense to Firebase Realtime Database
-      const expenseRef = await push(ref(database, "expenses"), expenseData);
-      console.log("Expense saved successfully");
-
-      // Optionally clear the form after submission
-      setAmount("");
-      setDescription("");
-      setCategory("Food");
-
-      // Call the parent component's function to add the expense
-      onAddExpense({
-        id: expenseRef.key, // Use the key of the new expense
-        ...expenseData,
-      });
-    } catch (error) {
-      console.error("Error saving expense:", error);
+    if (expenseToEdit) {
+      onUpdateExpense(expense);
+    } else {
+      onAddExpense(expense);
     }
+    setAmount("");
+    setDescription("");
+    setCategory("");
   };
 
   return (
     <div className="expense-form-container">
-      <h2>Add Expense</h2>
+      <h2 className="form-title">
+        {expenseToEdit ? "Edit Expense" : "Add Expense"}
+      </h2>
       <form onSubmit={handleSubmit} className="expense-form">
         <div className="form-group">
-          <label>Amount</label>
+          <label htmlFor="amount">Amount</label>
           <input
+            id="amount"
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
@@ -52,8 +49,9 @@ const ExpenseForm = ({ onAddExpense }) => {
           />
         </div>
         <div className="form-group">
-          <label>Description</label>
+          <label htmlFor="description">Description</label>
           <input
+            id="description"
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -61,12 +59,16 @@ const ExpenseForm = ({ onAddExpense }) => {
           />
         </div>
         <div className="form-group">
-          <label>Category</label>
+          <label htmlFor="category">Category</label>
           <select
+            id="category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
           >
+            <option value="" disabled>
+              Choose Category
+            </option>
             <option value="Food">Food</option>
             <option value="Petrol">Petrol</option>
             <option value="Salary">Salary</option>
@@ -74,7 +76,9 @@ const ExpenseForm = ({ onAddExpense }) => {
             <option value="Other">Other</option>
           </select>
         </div>
-        <button type="submit">Add Expense</button>
+        <button type="submit" className="form-btn">
+          {expenseToEdit ? "Update Expense" : "Add Expense"}
+        </button>
       </form>
     </div>
   );

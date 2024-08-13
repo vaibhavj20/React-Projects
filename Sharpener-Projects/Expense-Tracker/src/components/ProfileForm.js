@@ -39,6 +39,7 @@ const ProfileForm = ({
   };
 
   const handleCancelClick = () => {
+    document.body.classList.remove("blur");
     setShowForm(false);
   };
 

@@ -49,7 +49,7 @@
 .form-btn {
   width: 100%;
   padding: 0.75rem;
-  background-color: #4caf50;
+  background-color: #4c74af;
   color: #fff;
   font-size: 1rem;
   font-weight: bold;
@@ -60,7 +60,7 @@
 }
 
 .form-btn:hover {
-  background-color: #43a047;
+  background-color: #3c6bb1;
 }
 
 /* Expense List Container */

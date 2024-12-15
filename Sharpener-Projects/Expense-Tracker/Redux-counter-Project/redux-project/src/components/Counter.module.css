@@ -1,0 +1,27 @@
+.counter {
+  text-align: center;
+  margin: 2rem auto;
+  border: 2px solid #61dafb;
+  padding: 1rem;
+  border-radius: 10px;
+  width: 20rem;
+}
+
+.value {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.buttons button {
+  margin: 0.5rem;
+}
+
+.toggle {
+  margin-top: 1rem;
+  background-color: #ff9f43;
+  color: white;
+}
+
+.toggle:hover {
+  background-color: #ff7f24;
+}
